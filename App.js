@@ -1,18 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, FlatList } from 'react-native';
+import { useState } from 'react';
+import Item from './src/components/Items';
 
 export default function App() {
+  const [text, setText] = useState("");
+  const [taskList, setTaskList] = useState([]);
+  function handleinputtext(text){
+    setText(text);
+  }
+  function handleItems(){
+    setTaskList([...taskList, text]);
+  }
+
   return (
      <View style={styles.container}>
     <View style={styles.inputContainer}>
-      <TextInput  style= {styles.Input} placeholder='Zadaj úlohu ...'/>
-      <Button title = "ADD"/>
+      <TextInput onChangeText={handleinputtext} style= {styles.input} placeholder='Zadaj úlohu ...'/>
+      <Button onPress={handleItems} title = "ADD"/>
 
       </View>
 
-      <View style={styles.taskContainer}>
-        <Text>UDALOSTI :::::</Text>
-      </View>
+   <FlatList
+          data={taskList}
+          renderItem={({item}) => <Item title={item} />}
+          keyExtractor={item => item.id}
+        />
       <StatusBar style="auto" />
     </View>
   );
@@ -21,7 +34,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#2372b7',
   },
 input: { 
     borderWidth: 3, 
